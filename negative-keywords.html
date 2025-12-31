@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negative Keywords Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            margin-top: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .info {
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Negative Keywords Generator</h1>
+    
+    <div class="info">
+        <p>Enter your main keywords and this tool will generate negative keywords by adding common negative prefixes.</p>
+    </div>
+    
+    <div class="container">
+        <label for="inputKeywords">Enter keywords (one per line or separated by commas):</label>
+        <textarea id="inputKeywords" placeholder="Enter your keywords..."></textarea>
+    </div>
+    
+    <div class="container">
+        <label for="negativeType">Negative Type:</label>
+        <select id="negativeType">
+            <option value="prefixes">Prefixes (no, not, un, etc.)</option>
+            <option value="suffixes">Suffixes (less, free, etc.)</option>
+            <option value="both">Both prefixes and suffixes</option>
+            <option value="phrases">Negative phrases (no, don't want, etc.)</option>
+        </select>
+    </div>
+    
+    <div class="container">
+        <label for="outputResult">Generated Negative Keywords:</label>
+        <textarea id="outputResult" placeholder="Negative keywords will appear here..." readonly></textarea>
+    </div>
+    
+    <button onclick="generateNegativeKeywords()">Generate Negative Keywords</button>
+    <button onclick="clearAll()">Clear All</button>
+    <button onclick="copyToClipboard()">Copy to Clipboard</button>
+
+    <script>
+        function generateNegativeKeywords() {
+            const input = document.getElementById('inputKeywords').value;
+            const keywords = input.split(/[\n,]+/).map(kw => kw.trim()).filter(kw => kw !== '');
+            const negativeType = document.getElementById('negativeType').value;
+            
+            if (keywords.length === 0) {
+                alert('Please enter some keywords to generate negatives.');
+                return;
+            }
+            
+            let negativeKeywords = [];
+            
+            switch(negativeType) {
+                case 'prefixes':
+                    // Common negative prefixes
+                    const prefixes = ['no', 'not', 'non', 'un', 'anti', 'dis', 'in', 'im', 'ir', 'il'];
+                    
+                    keywords.forEach(keyword => {
+                        prefixes.forEach(prefix => {
+                            negativeKeywords.push(prefix + keyword);
+                            // Also add with space: "no keyword", "not keyword", etc.
+                            if (prefix === 'no' || prefix === 'not') {
+                                negativeKeywords.push(prefix + ' ' + keyword);
+                            }
+                        });
+                    });
+                    break;
+                    
+                case 'suffixes':
+                    // Common negative suffixes
+                    const suffixes = ['less', 'free', 'proof'];
+                    
+                    keywords.forEach(keyword => {
+                        suffixes.forEach(suffix => {
+                            // Don't add if keyword already ends with the suffix
+                            if (!keyword.toLowerCase().endsWith(suffix)) {
+                                negativeKeywords.push(keyword + suffix);
+                                // Also add with space: "keyword less", "keyword free", etc.
+                                if (suffix === 'less' || suffix === 'free') {
+                                    negativeKeywords.push(keyword + ' ' + suffix);
+                                }
+                            }
+                        });
+                    });
+                    break;
+                    
+                case 'both':
+                    // Both prefixes and suffixes
+                    const prefixesBoth = ['no', 'not', 'un', 'non', 'anti', 'dis'];
+                    const suffixesBoth = ['less', 'free'];
+                    
+                    keywords.forEach(keyword => {
+                        prefixesBoth.forEach(prefix => {
+                            negativeKeywords.push(prefix + keyword);
+                            if (prefix === 'no' || prefix === 'not') {
+                                negativeKeywords.push(prefix + ' ' + keyword);
+                            }
+                        });
+                        
+                        suffixesBoth.forEach(suffix => {
+                            if (!keyword.toLowerCase().endsWith(suffix)) {
+                                negativeKeywords.push(keyword + suffix);
+                                negativeKeywords.push(keyword + ' ' + suffix);
+                            }
+                        });
+                    });
+                    break;
+                    
+                case 'phrases':
+                    // Negative phrases
+                    const phrases = ['no', 'not', 'never', 'without', 'don\'t want', 'not interested in', 'avoid'];
+                    
+                    keywords.forEach(keyword => {
+                        phrases.forEach(phrase => {
+                            negativeKeywords.push(phrase + ' ' + keyword);
+                        });
+                    });
+                    break;
+            }
+            
+            // Remove duplicates and display results
+            const uniqueNegatives = [...new Set(negativeKeywords)];
+            document.getElementById('outputResult').value = uniqueNegatives.join('\n');
+        }
+        
+        function clearAll() {
+            document.getElementById('inputKeywords').value = '';
+            document.getElementById('outputResult').value = '';
+        }
+        
+        function copyToClipboard() {
+            const output = document.getElementById('outputResult');
+            output.select();
+            document.execCommand('copy');
+            alert('Copied to clipboard!');
+        }
+    </script>
+</body>
+</html>
