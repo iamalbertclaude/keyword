@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keyword Match Type Tool</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .header {
+      background-color: #333;
+      color: white;
+      padding: 0.5rem 0;
+    }
+    .footer {
+      background-color: #333;
+      color: white;
+      padding: 1.5rem 0;
+      margin-top: 2rem;
+    }
+    .input-group {
+      margin-bottom: 1rem;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+    }
+    .btn-success {
+      background-color: #28a745;
+      border: none;
+    }
+    .btn-warning {
+      background-color: #ffc107;
+      border: none;
+    }
+    .results-area {
+      height: 150px;
+    }
+    .copy-btn {
+      background-color: #007bff;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 1.5rem;
+      text-align: center;
+      border-radius: 5px;
+      margin-top: 1rem;
+    }
+    .match-type-label {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <nav class="navbar navbar-expand-lg navbar-dark header fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="https://i.imgur.com/7ZKjvXV.png" alt="Keyword Match Type Tool" width="160" />
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#">Word Combiner</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Duplicate Remover</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Negative Keywords</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Terms and Condition</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mt-5 pt-4">
+    <div class="row g-4">
+      <!-- Input Columns -->
+      <div class="col-md-4">
+        <textarea class="form-control" rows="10" placeholder="One word per line"></textarea>
+      </div>
+      <div class="col-md-4">
+        <textarea class="form-control" rows="10" placeholder="One word per line"></textarea>
+      </div>
+      <div class="col-md-4">
+        <textarea class="form-control" rows="10" placeholder="One word per line"></textarea>
+      </div>
+
+      <!-- Options Panel -->
+      <div class="col-md-4 offset-md-8">
+        <div class="mb-3">
+          <label class="form-label">Separator:</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="separator" id="space" checked />
+            <label class="form-check-label" for="space">Space</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="separator" id="nothing" />
+            <label class="form-check-label" for="nothing">Nothing</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="separator" id="dash" />
+            <label class="form-check-label" for="dash">Dash (-)</label>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label match-type-label">Select match type:</label>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="select-all" />
+            <label class="form-check-label" for="select-all">SELECT ALL</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="broad" />
+            <label class="form-check-label" for="broad">Broad match</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="modified-broad" />
+            <label class="form-check-label" for="modified-broad">Modified broad match (+)</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="phrase" />
+            <label class="form-check-label" for="phrase">"Phrase match"</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="exact" />
+            <label class="form-check-label" for="exact">[Exact match]</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="lowercase" />
+            <label class="form-check-label" for="lowercase">Change to lowercase</label>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-success">Make keyword list</button>
+          <button class="btn btn-warning">Clear fields</button>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div class="col-md-6">
+        <textarea class="form-control results-area" rows="10" placeholder="Results *"></textarea>
+      </div>
+      <div class="col-md-6">
+        <div class="copy-btn">Copy results</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <p style="font-size: 0.8rem; color: #ccc;">
+            Copyright © Keyword Match Type Tool. 
+            <a href="#" style="color: #fff;">Keyword Wrapper Tool</a> | 
+            <a href="#" style="color: #fff;">Google AdWords Wrapper</a> | 
+            <a href="#" style="color: #fff;">Google Ads Wrapper Tool</a> | 
+            <a href="#" style="color: #fff;">Bing Ads Wrapper</a> | 
+            <a href="#" style="color: #fff;">Word Combiner Tool</a> | 
+            <a href="#" style="color: #fff;">Merge Words Tool</a>. 
+            100% free & made with love by <a href="#" style="color: #fff;">eMarketing Institute</a>. |
+            <a href="#" style="color: #fff;">Privacy Policy</a> | 
+            <a href="#" style="color: #fff;">Cookie Policy</a> | 
+            <a href="#" style="color: #fff;">Sitemap</a>
+          </p>
+          <p style="font-size: 0.7rem; color: #ccc;">
+            This site is protected by reCAPTCHA and the Google 
+            <a href="#" style="color: #fff;">Privacy Policy</a> and 
+            <a href="#" style="color: #fff;">Terms of Service</a> apply.
+          </p>
+        </div>
+        <div class="col-md-4 text-end">
+          <a href="#" class="btn btn-sm btn-outline-light me-1"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="btn btn-sm btn-outline-light me-1"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="btn btn-sm btn-outline-light"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
