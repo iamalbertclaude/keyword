@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duplicate Remover</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            margin-top: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .stats {
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Duplicate Remover</h1>
+    <div class="container">
+        <label for="inputText">Enter text with duplicates (one per line or separated by commas):</label>
+        <textarea id="inputText" placeholder="Enter items with duplicates..."></textarea>
+    </div>
+    
+    <div class="container">
+        <label for="removeOptions">Remove Options:</label>
+        <div>
+            <input type="checkbox" id="caseSensitive" checked>
+            <label for="caseSensitive">Case Sensitive</label>
+        </div>
+        <div>
+            <input type="checkbox" id="trimWhitespace" checked>
+            <label for="trimWhitespace">Trim Whitespace</label>
+        </div>
+    </div>
+    
+    <div class="container">
+        <label for="outputResult">Results without duplicates:</label>
+        <textarea id="outputResult" placeholder="Cleaned results will appear here..." readonly></textarea>
+    </div>
+    
+    <div class="stats">
+        <p>Original count: <span id="originalCount">0</span> | Unique count: <span id="uniqueCount">0</span> | Removed: <span id="removedCount">0</span></p>
+    </div>
+    
+    <button onclick="removeDuplicates()">Remove Duplicates</button>
+    <button onclick="clearAll()">Clear All</button>
+    <button onclick="copyToClipboard()">Copy to Clipboard</button>
+
+    <script>
+        function removeDuplicates() {
+            const input = document.getElementById('inputText').value;
+            const caseSensitive = document.getElementById('caseSensitive').checked;
+            const trimWhitespace = document.getElementById('trimWhitespace').checked;
+            
+            // Split input into array
+            let items = input.split(/[\n,]+/);
+            
+            // Process items based on options
+            let processedItems = items.map(item => {
+                let processed = item;
+                if (trimWhitespace) {
+                    processed = processed.trim();
+                }
+                if (!caseSensitive) {
+                    processed = processed.toLowerCase();
+                }
+                return { original: item, processed: processed };
+            }).filter(item => item.processed !== '');
+            
+            // Count original items
+            const originalCount = processedItems.length;
+            
+            // Remove duplicates
+            const uniqueItems = [];
+            const seen = new Set();
+            
+            processedItems.forEach(item => {
+                if (!seen.has(item.processed)) {
+                    seen.add(item.processed);
+                    uniqueItems.push(item.original);
+                }
+            });
+            
+            // Update statistics
+            document.getElementById('originalCount').textContent = originalCount;
+            document.getElementById('uniqueCount').textContent = uniqueItems.length;
+            document.getElementById('removedCount').textContent = originalCount - uniqueItems.length;
+            
+            // Display results
+            document.getElementById('outputResult').value = uniqueItems.join('\n');
+        }
+        
+        function clearAll() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('outputResult').value = '';
+            document.getElementById('originalCount').textContent = '0';
+            document.getElementById('uniqueCount').textContent = '0';
+            document.getElementById('removedCount').textContent = '0';
+        }
+        
+        function copyToClipboard() {
+            const output = document.getElementById('outputResult');
+            output.select();
+            document.execCommand('copy');
+            alert('Copied to clipboard!');
+        }
+    </script>
+</body>
+</html>
