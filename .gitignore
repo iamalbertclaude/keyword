@@ -1,3 +1,124 @@
-(index.html is a source file, so no additional ignores are needed beyond what's already in the current .gitignore, which appears to be empty)
+```
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+*.o
+*.obj
+dist/
+build/
+target/
 
-(empty - no output)
+# Dependencies
+.venv/
+venv/
+node_modules/
+.julia/
+.zig/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg-info/
+.eggs/
+.mypy_cache/
+.pytest_cache/
+.tox/
+.coverage
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+build/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.war
+target/
+.gradle/
+build/
+
+# C/C++
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.exe
+*.out
+*.dylib
+*.ncb
+*.sdf
+*.suo
+*.pdb
+*.idb
+*.o
+*.obj
+
+# Compression
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
+
+# Other common ignores
+*.tmp
+*.temp
+*~
+.DS_Store
+Thumbs.db
+```

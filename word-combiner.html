@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Combiner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-top: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Word Combiner</h1>
+    <div class="container">
+        <label for="inputWords">Enter words (one per line or separated by commas):</label>
+        <textarea id="inputWords" placeholder="Enter words to combine..."></textarea>
+    </div>
+    
+    <div class="container">
+        <label for="combinationType">Combination Type:</label>
+        <select id="combinationType">
+            <option value="pairs">Pairs (Word1 + Word2)</option>
+            <option value="triples">Triples (Word1 + Word2 + Word3)</option>
+            <option value="all">All combinations</option>
+            <option value="withSeparator">With separator (Word1 + separator + Word2)</option>
+        </select>
+    </div>
+    
+    <div class="container" id="separatorContainer" style="display: none;">
+        <label for="separator">Separator:</label>
+        <input type="text" id="separator" value="" placeholder="e.g., space, dash, underscore">
+    </div>
+    
+    <div class="container">
+        <label for="outputResult">Combined Results:</label>
+        <textarea id="outputResult" placeholder="Results will appear here..." readonly></textarea>
+    </div>
+    
+    <button onclick="combineWords()">Combine Words</button>
+    <button onclick="clearAll()">Clear All</button>
+    <button onclick="copyToClipboard()">Copy to Clipboard</button>
+
+    <script>
+        // Show/hide separator input based on selection
+        document.getElementById('combinationType').addEventListener('change', function() {
+            const separatorContainer = document.getElementById('separatorContainer');
+            if (this.value === 'withSeparator') {
+                separatorContainer.style.display = 'block';
+            } else {
+                separatorContainer.style.display = 'none';
+            }
+        });
+        
+        function combineWords() {
+            const input = document.getElementById('inputWords').value;
+            const words = input.split(/[\n,]+/).map(word => word.trim()).filter(word => word !== '');
+            const combinationType = document.getElementById('combinationType').value;
+            
+            if (words.length === 0) {
+                alert('Please enter some words to combine.');
+                return;
+            }
+            
+            let combinations = [];
+            
+            switch(combinationType) {
+                case 'pairs':
+                    // Generate all possible pairs (without repetition)
+                    for (let i = 0; i < words.length; i++) {
+                        for (let j = 0; j < words.length; j++) {
+                            if (i !== j) {
+                                combinations.push(words[i] + words[j]);
+                            }
+                        }
+                    }
+                    break;
+                    
+                case 'triples':
+                    // Generate all possible triples (without repetition)
+                    for (let i = 0; i < words.length; i++) {
+                        for (let j = 0; j < words.length; j++) {
+                            for (let k = 0; k < words.length; k++) {
+                                if (i !== j && i !== k && j !== k) {
+                                    combinations.push(words[i] + words[j] + words[k]);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                    
+                case 'all':
+                    // Generate all possible combinations of 2+ words
+                    for (let r = 2; r <= words.length; r++) {
+                        const tempCombinations = getCombinations(words, r);
+                        tempCombinations.forEach(combo => {
+                            combinations.push(combo.join(''));
+                        });
+                    }
+                    break;
+                    
+                case 'withSeparator':
+                    const separator = document.getElementById('separator').value || ' ';
+                    for (let i = 0; i < words.length; i++) {
+                        for (let j = 0; j < words.length; j++) {
+                            if (i !== j) {
+                                combinations.push(words[i] + separator + words[j]);
+                            }
+                        }
+                    }
+                    break;
+            }
+            
+            document.getElementById('outputResult').value = combinations.join('\n');
+        }
+        
+        // Helper function to get combinations of r elements from array
+        function getCombinations(array, r) {
+            const result = [];
+            
+            function combine(tempArray, start) {
+                if (tempArray.length === r) {
+                    result.push([...tempArray]);
+                    return;
+                }
+                
+                for (let i = start; i < array.length; i++) {
+                    tempArray.push(array[i]);
+                    combine(tempArray, i + 1);
+                    tempArray.pop();
+                }
+            }
+            
+            combine([], 0);
+            return result;
+        }
+        
+        function clearAll() {
+            document.getElementById('inputWords').value = '';
+            document.getElementById('outputResult').value = '';
+            document.getElementById('separator').value = '';
+        }
+        
+        function copyToClipboard() {
+            const output = document.getElementById('outputResult');
+            output.select();
+            document.execCommand('copy');
+            alert('Copied to clipboard!');
+        }
+    </script>
+</body>
+</html>
